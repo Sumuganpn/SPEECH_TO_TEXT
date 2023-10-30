@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload and Transcribe Video</title>
+    <style>
+       
+    /* Global styles */
+    body {
+        font-family: 'Raleway', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form styles */
+    .conversion-form label,
+    .user-form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .conversion-form select,
+    .conversion-form input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .conversion-form button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* Converted text styles */
+    .converted-text {
+        margin-top: 30px;
+    }
+
+    .converted-text h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .converted-text p {
+        background-color: #f0f0f0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .converted-text button {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        margin-left: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* User form styles */
+    .user-form input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .btn.copy {
+         background-color: #007bff;
+         color: #fff;
+         border: none;
+         padding: 10px 20px;
+         border-radius: 4px;
+         cursor: pointer;
+         margin-top: 15px;
+    }
+
+    /* Submit button style */
+    .btn.submit {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+    }
+
+    /* Center buttons */
+    .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Upload and Transcribe Video</h1>
+        
+        <form method="POST" enctype="multipart/form-data"  class="conversion-form">
+            <input type="file" name="file" accept=".mp4" id="fileInput">
+            <input type="submit"  class="btn copy" value="Upload and Transcribe"> 
+        </form>
+   
+        {% if text %}
+        <div class="converted-text">
+        <h2>Transcription Result:</h2>
+        <p id="convertedText">{{ text }}</p>
+        </div>
+        {% endif %}
+
+        <button class="btn copy" onclick="copyText()">
+            <ion-icon name="btn convert"></ion-icon>
+            <span>Copy</span>
+        </button>
+
+        <form method="post" action="http://localhost/PROJECTS/bitshack/connect.php " class="user-form">
+            <br>
+            <label for="username">Title:</label>
+            <input type="text" name="username" id="username" /><br /><br />
+            <label for="password">Converted Text:</label>
+            <input class="coolDesc" type="text" name="password" id="password" /><br /><br />
+            <input type="submit" value="Submit" class="btn submit" />
+        </form>
+
+    </div>
+
+    <script>
+        const fileInput = document.getElementById("fileInput");
+        const selectedFile = document.getElementById("selectedFile");
+
+        fileInput.addEventListener("change", () => {
+            const fileName = fileInput.files[0] ? fileInput.files[0].name : "No file selected";
+            selectedFile.textContent = `Selected File: ${fileName}`;
+        });
+
+        function copyText() {
+            const convertedText = document.querySelector('#convertedText').textContent;
+            const passwordInput = document.querySelector('#password');
+            
+            // Insert the copied text into the input field
+            passwordInput.value = convertedText;
+    
+            // Notify the user that the text has been copied
+            alert('Text copied to clipboard and inserted into the input field');
+        }
+        
+    </script>
+</body>
+</html>
